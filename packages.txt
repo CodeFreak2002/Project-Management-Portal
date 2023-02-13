@@ -1,2 +1,0 @@
-React packages used:
-react-router-dom
