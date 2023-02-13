@@ -1,0 +1,21 @@
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
+
+
+const ClassSchema = new Schema({
+    title : {
+        type : String , 
+        required : true
+    } , 
+    code : {
+        type : String , 
+        required:  true
+    } , 
+    students : {
+        type : [mongoose.Schema.Types.Mixed] , 
+        required : false
+    }
+} , {timestamps : true});
+
+const Classes = mongoose.model('class' , ClassSchema);
+module.exports = Classes;
