@@ -17,7 +17,7 @@ const TeacherSchema = new Schema({
     } , 
     phone : {
         type : String , 
-        required : false
+        required : true
     } ,
     courses : {
         type : [mongoose.Schema.Types.Mixed] , 
