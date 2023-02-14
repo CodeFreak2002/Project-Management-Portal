@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 
-const FacultySchema = new Schema({
+const TeacherSchema = new Schema({
     name : {
         type : String , 
         required : true
@@ -17,7 +17,7 @@ const FacultySchema = new Schema({
     } , 
     phone : {
         type : String , 
-        required : false
+        required : true
     } ,
     courses : {
         type : [mongoose.Schema.Types.Mixed] , 
@@ -25,5 +25,5 @@ const FacultySchema = new Schema({
     }
 } , {timestamps : true});
 
-const Faculty = mongoose.model('faculty' , FacultySchema);
-module.exports = Faculty;
+const Teacher = mongoose.model('teacher' , TeacherSchema);
+module.exports = Teacher;
