@@ -46,12 +46,6 @@ export default function App() {
                 <span style={{color: 'black'}}> <span className="navbar-link">Home</span></span>{' '}
                 </MDBNavbarLink>
               </MDBNavbarItem>
-              <MDBNavbarItem className='Feature '>
-                <MDBNavbarLink href='#' style={{padding: 13}}> <span className="navbar-link">Features</span>{' '}</MDBNavbarLink>
-              </MDBNavbarItem>
-              <MDBNavbarItem>
-                <MDBNavbarLink href='#' style={{padding: 13}}><span className='navbar-link'>Pricing</span>{' '}</MDBNavbarLink>
-              </MDBNavbarItem>
               <MDBNavbarItem>
                 <MDBNavbarLink href='#' style={{padding: 13}}><span className='navbar-link'>About</span></MDBNavbarLink>
               </MDBNavbarItem>
