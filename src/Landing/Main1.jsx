@@ -41,7 +41,7 @@ export default function App() {
                 <Text>
                      Now you can work together with
                     {'\n'}
-                     your team mates 
+                    "Lorem ipsum dolor sit amet, consectetur
                 </Text>
             </View>
                
@@ -53,37 +53,64 @@ export default function App() {
                <View>
                 <Text>
                      Now you can work together with
-                    {'\n'}
-                     your team mates 
+                     {'\n'} "Lorem ipsum dolor sit amet, consectetur 
+                    
+                    
                 </Text>
             </View>
                </div>
                 
                <div className='feature-image'> 
-               <img cla style={{width: 120, height: 120 }} src="/images/feature_image_3.png" alt="" /> 
+                
+               <img style={{width: 120, height: 120 }} src="/images/feature_image_3.png" alt="" /> 
+              
                <Typography variant='h5' style={{paddingTop:'30%'}} >Tasks</Typography>
                <View>
                 <Text>
                      Now you can work together with
                     {'\n'}
-                     your team mates 
+                    "Lorem ipsum dolor sit amet, consectetur 
                 </Text>
             </View>
                </div>
-                
-            
-            </div>
+        </div>
 
 
-            <div className='header'>
+
+        <div className='header'>
                 <Typography variant='h4' style={{color: 'black'}}> How It Works </Typography>
+        </div>
+
+            <div className='HowItWorks'>
+
+            <div className='info'>
+
+                <div className='info-text'>
+                    <Typography variant='h5' style={{paddingLeft: '6%', color: 'black'}}>Join a team</Typography>
+                    <View style={{paddingLeft:'6%', paddingTop:'1%'}}>
+                        <Text>
+                            Come togather with your friends and{'\n'}
+                             form a team to work upon a task/project assigned
+                        </Text>
+                    </View>
+
+                 </div>
+                <div className='info-image'>
+
+                </div>
+
+            </div>
+           
+
+
+
             </div>
 
+           
 
-
-            <div className='header'>
+        <div className='header'>
                 <Typography variant='h4' style={{color: 'black'}}> Our Clients </Typography>
-            </div>
+        </div>
 
             <div className='Companies'>
 
@@ -104,21 +131,11 @@ export default function App() {
             </div>
 
         </div>
-
-
-
-        <div className='header'>
-                <Typography variant='h4' style={{color: 'black'}}> Footer </Typography>
-            </div>
-            
-            
-          
-            
-            
-         
     </div>
            
             
         
     );
 }
+
+ 

@@ -1,7 +1,7 @@
 import Navbar from './Navbar';
 import Main1 from './Main1';
+import Footer from './Footer';
 import Typography from '@mui/material/Typography';
- 
 
 import './Landing.css';
 
@@ -11,19 +11,12 @@ function Landing() {
             <Navbar/>
             <div className='branding'>
                 <Main1/>
+                <Footer/>
             </div>
-
-            <div className='features'>
+            
                  
-            </div>
+             
 
-            <div className='clients'>
-                 
-            </div>
-
-            <div className='about-us'>
-                 
-            </div>
         </div>
     )
 }
