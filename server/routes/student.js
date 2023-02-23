@@ -33,5 +33,20 @@ router.post('/login' , async function(req , res) {
     return res.status(500).send("Invalid Credentials");
 });
 
+router.get("/profile" , async function(req , res) {
+    let studentObj = await Student.findOne({email : req.body.email}).clone();
+    try {
+        let profile = {
+            "name" : studentObj.name , 
+            "email" : studentObj.email , 
+            "phone" : studentObj.phone
+        };
+        res.send(JSON.stringify(profile)).status(200);
+    } catch(err) {
+        console.log(err);
+        res.send("Error").status(500);
+    }
+});
+
 module.exports = router
 

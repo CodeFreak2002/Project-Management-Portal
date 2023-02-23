@@ -51,4 +51,19 @@ router.post("/login/" , function(req , res) {
     .catch((err) => {console.log(err)});
 });
 
+router.get("/profile" , async function(req , res) {
+    let teacherObj = await Teacher.findOne({email : req.body.email}).clone();
+    try {
+        let profile = {
+            "name" : teacherObj.name , 
+            "email" : teacherObj.email , 
+            "phone" : teacherObj.phone
+        };
+        res.send(JSON.stringify(profile)).status(200);
+    } catch(err) {
+        console.log(err);
+        res.send("Error").status(500);
+    }
+});
+
 module.exports = router;    
