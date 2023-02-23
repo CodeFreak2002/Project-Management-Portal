@@ -23,7 +23,7 @@ export default function App() {
 
             <div>
                 <Stack spacing={2} direction="row">
-                    <Link href="/" style={{marginLeft:'8%', marginTop: '1%'}}>
+                    <Link href="/login" style={{marginLeft:'8%', marginTop: '1%'}}>
                         <Button variant="contained">Get Started →</Button> 
                     </Link>
                 </Stack>     
@@ -39,9 +39,9 @@ export default function App() {
                <Typography variant='h5' style={{paddingTop:'30%'}} >Teamwork</Typography>
             <View>
                 <Text>
-                     Now you can work together with
+                     Now you can work on your projects together,
                     {'\n'}
-                    "Lorem ipsum dolor sit amet, consectetur
+                    track your progress and get things done.
                 </Text>
             </View>
                
@@ -52,10 +52,9 @@ export default function App() {
                <Typography variant='h5'style={{paddingTop:'30%'}} >Collabrate</Typography>
                <View>
                 <Text>
-                     Now you can work together with
-                     {'\n'} "Lorem ipsum dolor sit amet, consectetur 
-                    
-                    
+                    Join/create a team and work together
+                    {'\n'}  
+                    Get things done faster with Teamify
                 </Text>
             </View>
                </div>
@@ -67,9 +66,9 @@ export default function App() {
                <Typography variant='h5' style={{paddingTop:'30%'}} >Tasks</Typography>
                <View>
                 <Text>
-                     Now you can work together with
+                    Create tasks and assign them to your team
                     {'\n'}
-                    "Lorem ipsum dolor sit amet, consectetur 
+                    Let your team know what needs to be done
                 </Text>
             </View>
                </div>
