@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
+// import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -12,6 +12,13 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { Radio } from '@mui/material';
+import { RadioGroup } from '@mui/material';
+// import FormControl from '@mui/material';
+import FormLabel from '@mui/material/FormLabel';
+// import { useState } from 'react';
+import axios from 'axios';
+
 
 function Copyright(props: any) {
   return (
@@ -29,14 +36,52 @@ function Copyright(props: any) {
 const theme = createTheme();
 
 export default function SignUp() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
+    const data = await new FormData(event.currentTarget);
     console.log({
       email: data.get('email'),
       password: data.get('password'),
     });
+    if(data.get('Role') === 'Student'){
+      axios.post('http://localhost:5000/student/register', {
+        email: data.get('email'),
+        password: data.get('password'),
+        firstName: data.get('firstName'),
+        lastName: data.get('lastName'),
+        phone_number: data.get('phone_number'),
+        role: data.get('Role')
+      })
+      .then(function (res) {
+        console.log(res);
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+    }
+    else{
+      axios.post('http://localhost:5000/teacher/register', {
+        email: data.get('email'),
+        password: data.get('password'),
+        firstName: data.get('firstName'),
+        lastName: data.get('lastName'),
+        phone_number: data.get('phone_number'),
+        role: data.get('Role')
+      })
+      .then(function (res) {
+        console.log(res);
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+    }
   };
+
+  //radio buttons
+  // const [selectedVal, setSelectedVal] = React.useState('a');
+  // const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   setSelectedVal = (event.target.value);
+  // }
 
   return (
     <ThemeProvider theme={theme}>
@@ -111,6 +156,19 @@ export default function SignUp() {
                   id="phone_number"
                   autoComplete="new-password"
                 />
+              </Grid>
+              <Grid item xs={12}>
+                  <FormLabel id = "demo-radio-buttons-group-label"> Role</FormLabel>
+                  <RadioGroup
+                    row
+                    aria-labelledby="demo-radio-buttons-group-label"
+                    defaultValue="Student"
+                    name="radio-buttons-group"
+                    // onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {handleSubmit(e.target.value)}}
+                  >
+                    <FormControlLabel value="Student" control={<Radio />} label="Student" />
+                    <FormControlLabel value="Teacher" control={<Radio />} label="Teacher" />
+                  </RadioGroup>
               </Grid>
             </Grid>
             <Button

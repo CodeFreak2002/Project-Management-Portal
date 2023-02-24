@@ -12,17 +12,37 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+// import { useLocation } from 'react-router-dom';
+import axios from 'axios';
 
 const theme = createTheme();
 
 export default function SignInSide() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
+    const data = await new FormData(event.currentTarget); // event.currentTarget points to the form element
     console.log({
       email: data.get('email'),
       password: data.get('password'),
     });
+    await axios.post("http://localhost:5000/login",{
+      email: data.get('email'),
+      password: data.get('password'),
+    })
+    // Frontend submits 'data' to backend and waits to get back a json object containing role of the user on some route (to be written) res.role = 'Student' or res.role = 'Teacher' takes them to their respective Dashboards
+    const res = await axios.get("#")
+    .then((res)=>{
+      if(res.role === 'Student'){
+        window.location.href = '/student/dashboard';
+      }
+      else if(res.role === 'Teacher'){
+        window.location.href = '/teacher/dashboard';
+      }
+    })
+    .catch((err) =>{
+      console.log(err);
+    })
+    console.log(res.role) ;
   };
 
   return (
