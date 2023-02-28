@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Student = require('../models/student');
+const Classes = require('../models/class');
 
 router.post('/register', async function(req,res){
     var student = await Student.findOne({email : req.body.email}).clone();
@@ -46,6 +47,24 @@ router.get("/profile" , async function(req , res) {
         console.log(err);
         res.send("Error").status(500);
     }
+});
+
+async function get_courses(courses) {
+    let courselist = new Array();
+    for await (const id of courses) {
+        let obj = await Classes.findOne({code : id}).clone();
+        courselist.push(obj);
+    }
+    console.log(courselist);
+    return courselist;
+};
+
+router.get("/classes" , async function(req , res) {
+    let studentObj = await Student.findOne({email : req.body.email}).clone();
+    if(!studentObj.courses.length)
+        return res.status(500).send("no enrolled classes");
+    let course_list = await get_courses(studentObj.courses);
+    res.send(course_list).status(200);
 });
 
 module.exports = router
