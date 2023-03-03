@@ -7,12 +7,13 @@ import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 import * as mdb from 'mdb-ui-kit';
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import { ChakraProvider } from '@chakra-ui/react';
+import { AuthProvider } from './AuthContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
+  <AuthProvider>
     <App />
-  </React.StrictMode>
+  </AuthProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function
