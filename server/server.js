@@ -1,8 +1,14 @@
 const express = require("express");
 const app = express();
-const port = 8080;
+const port = 5000;
 const logger = require("morgan");
 const bodyParser = require("body-parser");
+
+var cors = require('cors');
+var corsOptions = {
+    origin : ['http://localhost:3000']
+};
+app.use(cors(corsOptions));
 
 const teacher = require("./routes/teacher.js");
 const classes = require("./routes/class.js");
