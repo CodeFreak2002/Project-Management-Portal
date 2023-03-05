@@ -6,9 +6,12 @@ PATH = localhost:8080/
 	Expected Request Body : {email , password}
 	c. View Profile : PATH/teacher/profile
 	Expected Request Body : {email}
+	d. View classes : PATH/teacher/classes 
+	valid email needed
 2. Class : 
 	a. Create : PATH/class/create
 	Expected Request Body : Wrong Implementation , will get fixed soon.
+	UPD : {email , code , title}
 	b. Enrol : PATH/class/enrol
 	Expected Request Body : {email , code}
 3. Student :
