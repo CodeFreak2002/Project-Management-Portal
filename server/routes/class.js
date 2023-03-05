@@ -2,6 +2,7 @@ const express = require("express");
 const Student = require("../models/student.js");
 const router = express.Router();
 const Class = require("./../models/class.js");
+const Teacher = require("./../models/teacher.js");
 
 async function CheckClassCode(code) {
     const classes = Class.find({code : code});
@@ -19,9 +20,12 @@ router.post("/create/" , async(req , res) => {
             title : req.body.title ,
             code : req.body.code
         });
-        newclass.save()
-        .then((result) => {res.send(result).status(200)})
-        .catch((err) => {console.log(err)});
+        await newclass.save();
+        let teacher = await Teacher.findOne({email : req.body.email}).clone();
+        if(teacher == null) return res.status(500).send("Not valid teacher");
+        teacher.courses.push(req.body.code);
+        await teacher.save();
+        return res.status(200).send("class created");
     }
 });
 

@@ -59,12 +59,13 @@ async function get_courses(courses) {
     return courselist;
 };
 
+
 router.get("/classes" , async function(req , res) {
     let studentObj = await Student.findOne({email : req.body.email}).clone();
     if(!studentObj.courses.length)
         return res.status(500).send("no enrolled classes");
     let course_list = await get_courses(studentObj.courses);
-    res.send(course_list).status(200);
+    res.status(200).send(course_list);
 });
 
 module.exports = router
