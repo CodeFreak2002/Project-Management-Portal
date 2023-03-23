@@ -5,7 +5,7 @@ const Class = require("./../models/class.js");
 const Teacher = require("./../models/teacher.js");
 
 async function CheckClassCode(code) {
-    const classes = Class.find({code : code});
+    const classes = Class.find({code : code}).clone();
     return classes;
 }
 
@@ -27,6 +27,14 @@ router.post("/create/" , async(req , res) => {
         await teacher.save();
         return res.status(200).send("class created");
     }
+});
+
+
+router.post("/search/" , async(req , res) => {
+    const classres = await Class.findOne({code : req.body.code}).clone();
+    if(classres == null)
+        res.send("No such class").status(500);
+    else res.send(classres).status(200);
 });
 
 router.post("/enrol/", async(req, res) => {
