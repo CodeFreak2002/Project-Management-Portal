@@ -62,4 +62,11 @@ router.post("/enrol/", async(req, res) => {
 
 });
 
+router.get("/students/" , async(req , res) => {
+    const classres = await Class.findOne({code : req.body.code}).clone();
+    if(classres == null)
+        res.send("No such class").status(500);
+    else res.send(classres.students).status(200);
+});
+
 module.exports = router;
