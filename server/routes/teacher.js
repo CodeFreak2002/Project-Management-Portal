@@ -6,14 +6,14 @@ const Classes = require("./../models/class.js");
 router.post("/register/" , function(req , res) {
     Teacher.find({email : req.body.email} , function(err , obj) {
         if(obj.length)
-            return res.send("Email already registered").status(500);
+            return res.status(500).send("Email already registered");
     })
     .clone()
     .then((results) => {
         if(!results.length) {
             Teacher.find({phone : req.body.phone} , function(err , obj) {
                 if(obj.length)
-                    return res.send("Phone number already registered").status(500);
+                    return res.status(500).send("Phone number already registered");
             })
             .clone()
             .then((results) => {
@@ -42,11 +42,11 @@ router.post("/login/" , function(req , res) {
         if(err) 
             return console.log(err);
         if(!obj.length) 
-            return res.send("User does not exit").status(404);
+            return res.status(404).send("User does not exit");
         let TeacherObj = obj[0];
         if(TeacherObj.password === req.body.password)
-            return res.send(TeacherObj).status(200);
-        return res.send("Incorrect Password").status(500);
+            return res.status(200).send(TeacherObj);
+        return res.status(500).send("Incorrect Password");
     })
     .clone()
     .catch((err) => {console.log(err)});
@@ -60,10 +60,10 @@ router.get("/profile" , async function(req , res) {
             "email" : teacherObj.email , 
             "phone" : teacherObj.phone
         };
-        res.send(JSON.stringify(profile)).status(200);
+        res.status(200).send(JSON.stringify(profile));
     } catch(err) {
         console.log(err);
-        res.send("Error").status(500);
+        res.status(500).send("Error");
     }
 });
 

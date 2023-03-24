@@ -14,7 +14,7 @@ async function CheckClassCode(code) {
 router.post("/create/" , async(req , res) => {
     const classres = await CheckClassCode(req.body.code);
     if(classres.length)
-        res.send("Class with the code already exists").status(500);
+        res.status(500).send("Class with the code already exists");
     else {
         const newclass = new Class({
             title : req.body.title ,

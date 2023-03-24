@@ -42,10 +42,10 @@ router.get("/profile" , async function(req , res) {
             "email" : studentObj.email , 
             "phone" : studentObj.phone
         };
-        res.send(JSON.stringify(profile)).status(200);
+        res.status(200).send(JSON.stringify(profile));
     } catch(err) {
         console.log(err);
-        res.send("Error").status(500);
+        res.status(500).send("Error");
     }
 });
 
