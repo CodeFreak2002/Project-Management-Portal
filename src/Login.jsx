@@ -14,6 +14,8 @@ import axios from 'axios';
 import TeacherDashboard from './TeacherDashboard/TeacherDashboard';
 import StudentDashboard from './StudentDashboard/StudentDashboard';
 import AuthContext from './AuthContext';
+import { render } from 'react-dom';
+import { Link } from 'react-router-dom';
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -39,11 +41,13 @@ function Login() {
         email: email,
         password: password
       }).then((res) => {
-        console.log(res.data);
-        localStorage.removeItem('teacher');
-        setTeacher({});
-        setStudent({token: res.data});
-        localStorage.setItem('student', JSON.stringify({token: res.data}))
+        if (res.status === 200) {
+          console.log(res.data);
+          localStorage.removeItem('teacher');
+          setTeacher({});
+          setStudent({token: res.data});
+          localStorage.setItem('student', JSON.stringify({token: res.data}))
+        }
       }).catch((err) => {
         console.log(err);
       })
@@ -53,11 +57,14 @@ function Login() {
         email: email,
         password: password
       }).then((res) => {
-        console.log(res);
-        localStorage.removeItem('student');
-        setStudent({});
-        setTeacher({token: res.data});
-        localStorage.setItem('teacher', JSON.stringify({token: res.data}));
+        console.log(res.status);
+        if (res.status === 200) {
+          console.log(res);
+          localStorage.removeItem('student');
+          setStudent({});
+          setTeacher({token: res.data});
+          localStorage.setItem('teacher', JSON.stringify({token: res.data}));
+        }
       }).catch((err) => {
         console.log(err);
       })
@@ -91,11 +98,10 @@ function Login() {
           </div>
 
           <Button variant='contained' className="mb-4 w-100" size="lg" onClick={handleSubmit}>Sign in</Button>
-
+          <Link to={"/register"}>New to Teamify? Sign up.</Link>
         </MDBCol>
 
       </MDBRow>
-
     </MDBContainer>
   );
 }
