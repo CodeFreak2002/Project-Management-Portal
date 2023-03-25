@@ -52,7 +52,7 @@ router.post("/login/" , function(req , res) {
     .catch((err) => {console.log(err)});
 });
 
-router.get("/profile" , async function(req , res) {
+router.post("/profile" , async function(req , res) {
     let teacherObj = await Teacher.findOne({email : req.body.email}).clone();
     try {
         let profile = {
@@ -77,7 +77,7 @@ async function get_courses(courses) {
     return courselist;
 };
 
-router.get("/classes" , async function(req , res) {
+router.post("/classes" , async function(req , res) {
     let teacherObj = await Teacher.findOne({email : req.body.email}).clone();
     if(teacherObj === null)
         return res.status(500).send("Not a valid teacher");

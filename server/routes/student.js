@@ -34,7 +34,7 @@ router.post('/login' , async function(req , res) {
     return res.status(500).send("Invalid Credentials");
 });
 
-router.get("/profile" , async function(req , res) {
+router.post("/profile" , async function(req , res) {
     let studentObj = await Student.findOne({email : req.body.email}).clone();
     try {
         let profile = {
@@ -60,7 +60,7 @@ async function get_courses(courses) {
 };
 
 
-router.get("/classes" , async function(req , res) {
+router.post("/classes" , async function(req , res) {
     let studentObj = await Student.findOne({email : req.body.email}).clone();
     if(!studentObj.courses.length)
         return res.status(500).send("no enrolled classes");
