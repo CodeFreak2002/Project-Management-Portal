@@ -33,8 +33,8 @@ router.post("/create/" , async(req , res) => {
 router.post("/search/" , async(req , res) => {
     const classres = await Class.findOne({code : req.body.code}).clone();
     if(classres == null)
-        res.send("No such class").status(500);
-    else res.send(classres).status(200);
+        res.status(500).send("No such class");
+    else res.status(200).send(classres);
 });
 
 router.post("/enrol/", async(req, res) => {
@@ -62,11 +62,11 @@ router.post("/enrol/", async(req, res) => {
 
 });
 
-router.get("/students/" , async(req , res) => {
+router.post("/students/" , async(req , res) => {
     const classres = await Class.findOne({code : req.body.code}).clone();
     if(classres == null)
-        res.send("No such class").status(500);
-    else res.send(classres.students).status(200);
+        res.status(500).send("No such class");
+    else res.status(200).send(classres.students);
 });
 
 module.exports = router;
