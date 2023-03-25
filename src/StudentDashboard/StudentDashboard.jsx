@@ -1,11 +1,12 @@
 import { Grid, Typography } from "@mui/material";
 import ClassCard from "./ClassCard";
 import Navbar from "./StudentNavbar";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import AuthContext from "../AuthContext";
 
 
 function StudentDashboard() {
+    const [upd, setUpd] = useState(false);
     const {student, setStudent, teacher, setTeacher} = useContext(AuthContext);
     let courses = student.token.courses;
     let classCards = [];
@@ -17,9 +18,13 @@ function StudentDashboard() {
         )
     });
 
+    useEffect(() => {
+
+    }, [upd]);
+
     return (
         <div style={{margin: '0 auto'}}>
-            <Navbar/>
+            <Navbar stateChanger={setUpd}/>
             <div className="greeting" style={{textAlign: 'center', marginTop: '3%'}}>
                 <Typography variant="h3" style={{color: 'black'}}>Good evening, {student.token.name}!</Typography>
             </div>

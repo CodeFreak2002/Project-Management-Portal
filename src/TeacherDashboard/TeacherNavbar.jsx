@@ -13,18 +13,22 @@ import {
 import Button from '@mui/material/Button';
 import './TeacherNavbar.css';
 import AuthContext from '../AuthContext';
-import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from '@mui/material';
+import { Alert, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Snackbar, TextField } from '@mui/material';
 import axios from 'axios';
 
-function TeacherNavbar() {
+function TeacherNavbar({ stateChanger }) {
   const [showNavColor, setShowNavColor] = useState(false);
   const [open, setOpen] = useState(false);
   const [open1, setOpen1] = useState(false);
-  const [open2, setOpen2] = useState(false);
-  const [open3, setOpen3] = useState(false);
+  const [severity, setSeverity] = useState("");
+  const [msg, setMsg] = useState("");
   const [classCode, setClassCode] = useState("");
   const [classTitle, setClassTitle] = useState("");
   const { student, setStudent, teacher, setTeacher } = useContext(AuthContext);
+
+  useEffect(() => {
+
+  }, [open1, severity, msg]);
 
   const logoutUser = () => {
     localStorage.removeItem('teacher');
@@ -37,21 +41,50 @@ function TeacherNavbar() {
     setClassTitle("");
   }
 
-  const createClass =  async () => {
-    await axios.post("http://localhost:5000/class/create", {
-      email: teacher.token.email,
-      title: classTitle,
-      code: classCode
-    }).then((res) => {
-      if (res.status === 200) {
-        console.log("Successfully added new class!");
-        let newTeacher = teacher;
-        if (classCode.length!=0) newTeacher.token.courses.push(classCode);
-        setTeacher(newTeacher);
-        localStorage.setItem('teacher', JSON.stringify(teacher));
-      }
-    })
-    setOpen(false);
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen1(false);
+    setSeverity("");
+    setMsg("");
+  };
+
+  const createClass = async () => {
+    if (classCode.length === 0 || classTitle.length === 0) {
+      setOpen1(true);
+      setSeverity("error");
+      setMsg("Please enter valid class code and title!");
+    }
+    else {
+      await axios.post("http://localhost:5000/class/create", {
+        email: teacher.token.email,
+        title: classTitle,
+        code: classCode
+      }).then((res) => {
+        if (res.status === 200) {
+          let newTeacher = teacher;
+          if (classCode.length !== 0) newTeacher.token.courses.push(classCode);
+          setTeacher(newTeacher);
+          localStorage.setItem('teacher', JSON.stringify(teacher));
+          setOpen1(true);
+          setSeverity("success");
+          setMsg("New class created");
+        }
+        else {
+          setOpen1(true);
+          setSeverity("warning");
+          setMsg(res.data);
+        }
+      }).catch((err) => {
+        console.log(err);
+        setOpen1(true);
+        setSeverity("error");
+        setMsg(err.response.data);
+      })
+      setOpen(false);
+      stateChanger(prev => !prev);
+    }
   }
 
   return (
@@ -92,15 +125,18 @@ function TeacherNavbar() {
           <DialogContentText>
             Please enter the code and title of the new class:
           </DialogContentText>
-          <TextField variant='outlined' required fullWidth style={{marginTop: '5%'}} value={classCode} onChange={(e) => setClassCode(e.target.value)} label="New Class Code" />
-          <br/>
-          <TextField variant='outlined' required fullWidth style={{marginTop: '5%'}} value={classTitle} onChange={(e) => setClassTitle(e.target.value)} label="New Class Title" />
+          <TextField variant='outlined' required fullWidth style={{ marginTop: '5%' }} value={classCode} onChange={(e) => setClassCode(e.target.value)} label="New Class Code" />
+          <br />
+          <TextField variant='outlined' required fullWidth style={{ marginTop: '5%' }} value={classTitle} onChange={(e) => setClassTitle(e.target.value)} label="New Class Title" />
         </DialogContent>
         <DialogActions>
           <Button variant='text' color='error' onClick={closeDialog}>Cancel</Button>
           <Button variant='text' onClick={createClass}>Create Class</Button>
         </DialogActions>
       </Dialog>
+      <Snackbar open={open1} autoHideDuration={5000} onClose={handleClose}>
+        <Alert severity={severity} variant="filled" onClose={handleClose}>{msg}</Alert>
+      </Snackbar>
     </>
   );
 }
