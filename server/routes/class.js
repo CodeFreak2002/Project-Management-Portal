@@ -14,7 +14,7 @@ async function CheckClassCode(code) {
 router.post("/create/" , async(req , res) => {
     const classres = await CheckClassCode(req.body.code);
     if(classres.length)
-        res.status(500).send("Class with the code already exists");
+        res.status(409).send("Class with the code already exists!");
     else {
         const newclass = new Class({
             title : req.body.title ,
@@ -22,10 +22,10 @@ router.post("/create/" , async(req , res) => {
         });
         await newclass.save();
         let teacher = await Teacher.findOne({email : req.body.email}).clone();
-        if(teacher == null) return res.status(500).send("Not valid teacher");
+        if(teacher == null) return res.status(404).send("Not valid teacher!");
         teacher.courses.push(req.body.code);
         await teacher.save();
-        return res.status(200).send("class created");
+        return res.status(200).send("Class Created!");
     }
 });
 
@@ -33,7 +33,7 @@ router.post("/create/" , async(req , res) => {
 router.post("/search/" , async(req , res) => {
     const classres = await Class.findOne({code : req.body.code}).clone();
     if(classres == null)
-        res.status(500).send("No such class");
+        res.status(404).send("No such class!");
     else res.status(200).send(classres);
 });
 
@@ -46,7 +46,7 @@ router.post("/enrol/", async(req, res) => {
         const enrolled = await student.courses.includes(course.code); 
         
         if (enrolled)
-            return res.status(202).send("Already enrolled.");
+            return res.status(409).send("Already enrolled!");
 
         course.students.push(student.email);
         student.courses.push(course.code);
@@ -57,7 +57,7 @@ router.post("/enrol/", async(req, res) => {
     
     } catch (err) {
         console.log(err)
-        return res.status(500).send("Error occurred");
+        return res.status(500).send("Error occurred!");
     }        
 
 });
@@ -65,7 +65,7 @@ router.post("/enrol/", async(req, res) => {
 router.post("/students/" , async(req , res) => {
     const classres = await Class.findOne({code : req.body.code}).clone();
     if(classres == null)
-        res.status(500).send("No such class");
+        res.status(404).send("No such class!");
     else res.status(200).send(classres.students);
 });
 
