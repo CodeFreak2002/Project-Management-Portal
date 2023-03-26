@@ -6,6 +6,7 @@ import Register from './Register.jsx';
 import Landing from './Landing/Landing';
 import StudentDashboard from './StudentDashboard/StudentDashboard';
 import TeacherDashboard from './TeacherDashboard/TeacherDashboard';
+import ClassDashboard from './ClassDashboard/Task';
 import AuthContext from './AuthContext';
 import { useReducer, useContext, useEffect } from 'react';
 
@@ -38,6 +39,7 @@ const App = () => {
         <Route path="/TeacherDashboard" exact>
           {teacher && !!teacher.token ? <TeacherDashboard/> : <Redirect to={"/login"}/>}
         </Route>
+        <Route path="/ClassDashboard" exact><ClassDashboard/></Route>
       </Switch>
     </Router>
     
