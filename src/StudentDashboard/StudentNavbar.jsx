@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   MDBNavbar,
   MDBContainer,
@@ -16,21 +16,35 @@ import { redirect } from 'react-router-dom';
 import { fontWeight } from '@mui/system';
 import './StudentNavbar.css';
 import AuthContext from '../AuthContext';
-import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from '@mui/material';
+import { Alert, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Snackbar, TextField } from '@mui/material';
 import axios from 'axios';
  
-
-
-export default function App() {
+function StudentNavbar({ stateChanger }) {
   const [showNavColor, setShowNavColor] = useState(false);
   const [open, setOpen] = useState(false);
+  const [open1, setOpen1] = useState(false);
+  const [severity, setSeverity] = useState("");
+  const [msg, setMsg] = useState("");
   const [classCode, setClassCode] = useState("");
   const {student, setStudent, teacher, setTeacher} = useContext(AuthContext);
+
+  useEffect(() => {
+
+  }, [open1, severity, msg])
 
   const logoutUser = () => {
     localStorage.removeItem('student');
     setStudent({});
   }
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen1(false);
+    setSeverity("");
+    setMsg("");
+  };
 
   const enrol = async () => {
     await axios.post("http://localhost:5000/class/enrol", {
@@ -38,17 +52,25 @@ export default function App() {
       email: student.token.email
     }).then((res) => {
       if (res.status === 200) {
-        console.log("Successfully enrolled!");
         let newStudent = student;
-        if (classCode.length > 0)newStudent.token.courses.push(classCode);
+        if (classCode.length > 0) newStudent.token.courses.push(classCode);
         setStudent(newStudent);
         localStorage.setItem('student', JSON.stringify(student));
+        setOpen1(true);
+        setSeverity("success");
+        setMsg("Successfully enrolled!");
       }
-      else if (res.status === 202) {
-        console.log("Already enrolled!");
-        // display already enrolled snackbar
+      else {
+        setOpen1(true);
+        setSeverity("warning");
+        setMsg(res.data);
       }
       setOpen(false);
+      stateChanger(prev => !prev);
+    }).catch((err) => {
+      setOpen1(true);
+      setSeverity("error");
+      setMsg(err.response.data);
     })
   }
 
@@ -59,11 +81,13 @@ export default function App() {
       if (res.status === 200) {
         enrol();
       }
-      else if (res.status === 500) {
-        console.log("Class not found!");
-        // display class not found snackbar
-      }
+    }).catch((err) => {
+      setOpen1(true);
+      setSeverity("error");
+      setMsg(err.response.data);
     })
+    setOpen(false);
+    stateChanger(prev => !prev);
   }
 
   return (
@@ -112,11 +136,11 @@ export default function App() {
           <Button variant='text' onClick={joinClass}>Join Class</Button>
         </DialogActions>
       </Dialog>
+      <Snackbar open={open1} autoHideDuration={5000} onClose={handleClose}>
+        <Alert severity={severity} variant="filled" onClose={handleClose}>{msg}</Alert>
+      </Snackbar>
     </>
   );
 }
 
-
-  
-  
-   
+export default StudentNavbar;

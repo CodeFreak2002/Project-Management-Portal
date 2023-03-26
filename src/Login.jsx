@@ -9,7 +9,7 @@ import {
   MDBCheckbox
 }
   from 'mdb-react-ui-kit';
-import { Button, MenuItem, Select, Snackbar, Typography } from '@mui/material';
+import { Alert, Button, MenuItem, Select, Snackbar, Typography } from '@mui/material';
 import axios from 'axios';
 import TeacherDashboard from './TeacherDashboard/TeacherDashboard';
 import StudentDashboard from './StudentDashboard/StudentDashboard';
@@ -18,6 +18,8 @@ import { render } from 'react-dom';
 import { Link } from 'react-router-dom';
 
 function Login() {
+  const [open, setOpen] = useState(false);
+  const [errMsg, setErrMsg] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("Student");
@@ -34,6 +36,15 @@ function Login() {
     }
   })
 
+  useEffect(() => {}, [open, errMsg]);
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false);
+  };
+
   const handleSubmit = async () => {
     console.log(email, password, role);
     if (role === "Student") {
@@ -49,7 +60,8 @@ function Login() {
           localStorage.setItem('student', JSON.stringify({token: res.data}))
         }
       }).catch((err) => {
-        console.log(err);
+        setOpen(true);
+        setErrMsg(err.response.data);
       })
     }
     else if (role === "Teacher") {
@@ -65,8 +77,10 @@ function Login() {
           setTeacher({token: res.data});
           localStorage.setItem('teacher', JSON.stringify({token: res.data}));
         }
+        
       }).catch((err) => {
-        console.log(err);
+        setOpen(true);
+        setErrMsg(err.response.data);
       })
     }
   }
@@ -102,6 +116,9 @@ function Login() {
         </MDBCol>
 
       </MDBRow>
+      <Snackbar open={open} autoHideDuration={5000} onClose={handleClose}>
+        <Alert severity='error' variant='filled' onClose={handleClose}>{errMsg}</Alert>
+      </Snackbar>
     </MDBContainer>
   );
 }
