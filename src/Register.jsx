@@ -28,7 +28,7 @@ function Register() {
   const handleSubmit = async () => {
     console.log(name, email, password, phone);
     if (role === "Student") {
-      await axios.post('http://localhost:5000/student/register', {
+      await axios.post('http://project-management-portal-server.vercel.app/student/register', {
         name: name,
         email: email,
         password: password,
@@ -40,7 +40,7 @@ function Register() {
       })
     }
     else if (role === "Teacher") {
-      await axios.post('http://localhost:5000/teacher/register', {
+      await axios.post('http://project-management-portal-server.vercel.app/teacher/register', {
         name: name,
         email: email,
         password: password,
