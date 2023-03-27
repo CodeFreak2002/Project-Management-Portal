@@ -18,7 +18,7 @@ export default function App() {
                 <Typography variant='h5' style={{paddingLeft: '8.25%', color: 'black'}}>Collaborate. Create. Conquer.</Typography>
             </div>
             <div className='image'>
-                <img style={{width: 500, height: 350 }} src="/images/5.jpg" alt="Reference pic"/>
+                <img style={{width: 500, height: 350 , marginLeft:'35%'}} src="/images/5.jpg" alt="Reference pic"/>
             </div>
 
             <div>

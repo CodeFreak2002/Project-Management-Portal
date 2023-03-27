@@ -47,7 +47,7 @@ function StudentNavbar({ stateChanger }) {
   };
 
   const enrol = async () => {
-    await axios.post("http://localhost:5000/class/enrol", {
+    await axios.post("http://project-management-portal-server.vercel.app/class/enrol", {
       code: classCode,
       email: student.token.email
     }).then((res) => {
@@ -75,7 +75,7 @@ function StudentNavbar({ stateChanger }) {
   }
 
   const joinClass = async () => {
-    await axios.post("http://localhost:5000/class/search", {
+    await axios.post("http://project-management-portal-server.vercel.app/class/search", {
       code: classCode
     }).then((res) => {
       if (res.status === 200) {
