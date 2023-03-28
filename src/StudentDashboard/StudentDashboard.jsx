@@ -3,23 +3,41 @@ import ClassCard from "./ClassCard";
 import Navbar from "./StudentNavbar";
 import { useContext, useEffect, useState } from "react";
 import AuthContext from "../AuthContext";
+import axios from "axios";
 
 
 function StudentDashboard() {
     const [upd, setUpd] = useState(false);
     const {student, setStudent, teacher, setTeacher} = useContext(AuthContext);
-    let courses = student.token.courses;
-    let classCards = [];
-    courses.forEach(course => {
-        classCards.push(
-            <Grid item xs={6} md={3}>
-                <ClassCard clName={course} instructorName={"def"} />
-            </Grid>
-        )
-    });
+    const [classCards, setClassCards] = useState(null);
+
+    const fetchClasses = async () => {
+        await axios.post("http://project-management-portal-server.vercel.app/student/classes", {
+            email: student.token.email
+        }).then((res) => {
+            if (res.status === 200) {
+                let courses = res.data;
+                let cards = [];
+                courses.forEach(course => {
+                    cards.push(
+                        <Grid item xs={6} md={3}>
+                            <ClassCard clCode={course.code} clName={course.title} />
+                        </Grid>
+                    )
+                });
+                setClassCards(cards);
+            }
+        }).catch((err) => {
+            console.log(err.response.data);
+        })
+    }
 
     useEffect(() => {
+        fetchClasses();
+    }, []);
 
+    useEffect(() => {
+        fetchClasses();
     }, [upd]);
 
     return (
@@ -32,7 +50,7 @@ function StudentDashboard() {
                 <div className="projects-heading" style={{marginLeft: '5%', marginTop: '2%'}}>
                     <Typography variant="h4" style={{color: 'black'}}>My Projects</Typography>
                 </div>
-                <Grid container rowSpacing={17} columnSpacing={8} style={{padding: '2% 5%', marginBottom: '10%'}}>
+                <Grid container rowSpacing={17} columnSpacing={8} style={{padding: '2% 5%', marginBottom: '15%'}}>
                     {classCards}
                 </Grid>
             </div>
