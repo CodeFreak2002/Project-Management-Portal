@@ -26,7 +26,9 @@ const App = () => {
   return (
     <Router>
       <Switch>
-        <Route path="/" exact><Landing/></Route>
+        <Route path="/" exact>
+        {student && !!student.token ? (<Redirect to="/StudentDashboard"/>) : (teacher && !!teacher.token ? <Redirect to="/TeacherDashboard"/> : <Landing/>)}
+        </Route>
         <Route path="/login" exact>
           {student && !!student.token ? (<Redirect to="/StudentDashboard"/>) : (teacher && !!teacher.token ? <Redirect to="/TeacherDashboard"/> : <Login/>)}
         </Route>
