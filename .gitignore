@@ -35,6 +35,8 @@ yarn-error.log*
 
 # production
 /build
+server/.vercel
+server/vercel.json
 
 # misc
 .DS_Store
