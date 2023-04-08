@@ -67,24 +67,23 @@ router.post("/profile" , async function(req , res) {
     }
 });
 
-async function get_courses(courses) {
-    let courselist = new Array();
-    for await (const id of courses) {
-        let obj = await Classes.findOne({code : id}).clone();
-        courselist.push(obj);
-    }
-    console.log(courselist);
-    return courselist;
-};
-
 router.post("/classes" , async function(req , res) {
     let teacherObj = await Teacher.findOne({email : req.body.email}).clone();
     if(teacherObj === null)
         return res.status(500).send("Not a valid teacher");
-    if(!teacherObj.courses.length)
-        return res.status(500).send("no enrolled classes");
-    let course_list = await get_courses(teacherObj.courses);
-    res.status(200).send(course_list);
+    await teacherObj.populate('courses');
+    return res.status(200).send(teacherObj);
+});
+
+router.get("/class/" , async(req , res) => {
+    const classres = await Classes.findById(req.query.id).clone();
+    if(classres == null)
+        res.status(500).send("No such class");
+    else {
+        await classres.populate('students');
+        await classres.populate('teams');
+        return res.status(200).send(classres);
+    }
 });
 
 module.exports = router;    

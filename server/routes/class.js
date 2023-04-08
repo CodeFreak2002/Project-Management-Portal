@@ -21,20 +21,21 @@ router.post("/create/" , async(req , res) => {
             code : req.body.code
         });
         await newclass.save();
-        let teacher = await Teacher.findOne({email : req.body.email}).clone();
-        if(teacher == null) return res.status(500).send("Not valid teacher");
-        teacher.courses.push(req.body.code);
-        await teacher.save();
+        await Teacher.findOneAndUpdate({email : req.body.email} , {$push: {courses : newclass}}).clone();
         return res.status(200).send("class created");
     }
 });
 
 
-router.post("/search/" , async(req , res) => {
-    const classres = await Class.findOne({code : req.body.code}).clone();
+router.get("/search/" , async(req , res) => {
+    console.log(req.query.code)
+    const classres = await Class.findOne({code : req.query.code}).clone();
     if(classres == null)
-        res.status(500).send("No such class");
-    else res.status(200).send(classres);
+        return res.status(500).send("No such class");
+    else{
+        await classres.populate('teams');
+        return res.status(200).send(classres);
+    }
 });
 
 router.post("/enrol/", async(req, res) => {
@@ -43,16 +44,14 @@ router.post("/enrol/", async(req, res) => {
         var course = await Class.findOne({code : req.body.code}).clone();
         var student = await Student.findOne({email : req.body.email}).clone();
         
-        const enrolled = await student.courses.includes(course.code); 
         
+        console.log(student);
+        const enrolled = await student.courses.includes(course.id); 
         if (enrolled)
             return res.status(202).send("Already enrolled.");
 
-        course.students.push(student.email);
-        student.courses.push(course.code);
-
-        await course.save();
-        await student.save();
+        await Class.findOneAndUpdate({code : req.body.code} , {$push: {students : student}}).clone();
+        await Student.findOneAndUpdate({email : req.body.email} , {$push: {courses : course}}).clone();
         return res.status(200).send("Successful");
     
     } catch (err) {
@@ -66,7 +65,11 @@ router.post("/students/" , async(req , res) => {
     const classres = await Class.findOne({code : req.body.code}).clone();
     if(classres == null)
         res.status(500).send("No such class");
-    else res.status(200).send(classres.students);
+    else {
+        console.log(classres.students);
+        await classres.populate('students');
+        res.status(200).send(classres);
+    }
 });
 
 module.exports = router;
