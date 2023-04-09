@@ -16,6 +16,9 @@ const ClassSchema = new Schema({
     },
     teams : {
         type : [{ type : Schema.Types.ObjectId, ref : 'team'}]
+    },
+    posts : {
+        type : [{ type : Schema.Types.ObjectId, ref : 'post'}]
     }
     
 } , {timestamps : true});

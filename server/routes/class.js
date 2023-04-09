@@ -3,6 +3,7 @@ const Student = require("../models/student.js");
 const router = express.Router();
 const Class = require("./../models/class.js");
 const Teacher = require("./../models/teacher.js");
+const Post = require("./../models/post.js");
 
 async function CheckClassCode(code) {
     const classes = Class.find({code : code}).clone();
@@ -68,6 +69,18 @@ router.post("/students/" , async(req , res) => {
     else {
         console.log(classres.students);
         await classres.populate('students');
+        res.status(200).send(classres);
+    }
+});
+
+router.get("/posts/" , async(req , res) => {
+    const classres = await Class.findById(req.query.id).clone();
+    if(classres == null)
+        res.status(500).send("No such class");
+    else {
+        await classres.populate('students');
+        await classres.populate('posts');
+        await classres.populate('teams');
         res.status(200).send(classres);
     }
 });

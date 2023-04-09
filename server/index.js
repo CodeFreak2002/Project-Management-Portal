@@ -15,6 +15,7 @@ const classes = require("./routes/class.js");
 const student = require("./routes/student.js");
 const team = require("./routes/teams.js")
 const task = require("./routes/task.js")
+const posts = require("./routes/posts.js")
 
 var util = require('util');
 require('dotenv').config()
@@ -29,7 +30,8 @@ app.use("/class" , classes);
 app.use("/student", student)
 app.use("/team", team)
 app.use("/task" , task)
-
+app.use("/posts" , posts)
+// app.use("/post" , posts)
 var encoder = new util.TextEncoder('utf-8');
 
 const dbURL = process.env.DATABASE_URL;
