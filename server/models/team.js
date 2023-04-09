@@ -34,6 +34,10 @@ const teamSchema = Schema({
 
     invites : {
         type : [{ type : Schema.Types.ObjectId, ref : 'student' }]
+    },
+
+    review : {
+        type : [{ type : Schema.Types.ObjectId, ref : 'task' }]
     }
 
 }, {timestamps:true});
