@@ -4,15 +4,6 @@ const Team = require('../models/team')
 const Class = require('../models/class')
 const Task = require('../models/task')
 
-router.get("/", async (req, res) => {
-    let task = await Task.findById(req.query.id).clone();
-    await task.populate('team');
-    await task.populate('reviewedBy');
-    await task.populate('team');
-    await task.populate('executedBy');
-    return res.status(200).send(task);
-})
-
 router.post("/create/" , async(req , res) => {
     let team = await Team.findById(req.body.team).clone();
 
