@@ -93,7 +93,11 @@ function StudentNavbar({ stateChanger }) {
     <>
       <MDBNavbar expand='lg'  bgColor='light'>
         <MDBContainer fluid>
-          <MDBNavbarBrand href='#'><span className='navbar-title'>Teamify</span>{' '}</MDBNavbarBrand>
+          <MDBNavbarBrand>
+            <Link to="/StudentDashboard">
+              <span className='navbar-title'>Teamify</span>{' '}
+            </Link>
+          </MDBNavbarBrand>
           <MDBNavbarToggler
             type='button'
             data-target='#navbarColor02'

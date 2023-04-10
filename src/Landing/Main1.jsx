@@ -73,40 +73,7 @@ export default function App() {
             </View>
                </div>
         </div>
-
-
-
-        <div className='header'>
-                <Typography variant='h4' style={{color: 'black'}}> How It Works </Typography>
-        </div>
-
-            <div className='HowItWorks'>
-
-            <div className='info'>
-
-                <div className='info-text'>
-                    <Typography variant='h5' style={{paddingLeft: '6%', color: 'black'}}>Join a team</Typography>
-                    <View style={{paddingLeft:'6%', paddingTop:'1%'}}>
-                        <Text>
-                            Come togather with your friends and{'\n'}
-                             form a team to work upon a task/project assigned
-                        </Text>
-                    </View>
-
-                 </div>
-                <div className='info-image'>
-
-                </div>
-
-            </div>
-           
-
-
-
-            </div>
-
-           
-
+        
         <div className='header'>
                 <Typography variant='h4' style={{color: 'black'}}> Our Clients </Typography>
         </div>

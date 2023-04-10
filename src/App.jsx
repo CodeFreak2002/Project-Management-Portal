@@ -10,6 +10,7 @@ import ClassDashboard from './ClassDashboard/ClassDashboard';
 import AuthContext from './AuthContext';
 import { useReducer, useContext, useEffect } from 'react';
 import TeamDashboard from './TeamDashboard/TeamDashboard';
+import TaskDescription from './TaskDescription/TaskDescription';
 
 const App = () => {
   const {student, setStudent, teacher, setTeacher} = useContext(AuthContext);
@@ -44,6 +45,7 @@ const App = () => {
         </Route>
         <Route path="/class"><ClassDashboard/></Route>
         <Route path="/team"><TeamDashboard/></Route>
+        <Route path="/task"><TaskDescription/></Route>
       </Switch>
     </Router>
     

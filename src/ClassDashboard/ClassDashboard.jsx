@@ -10,6 +10,7 @@ import TeamCard from "./TeamCard";
 import StudentDetail from "./StudentDetail";
 import AuthContext from "../AuthContext";
 import { Close } from "@mui/icons-material";
+import TeacherNavbar from "../TeacherDashboard/TeacherNavbar";
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -58,8 +59,9 @@ export default function ClassDashboard() {
     const [open1, setOpen1] = useState(false);
     const [severity, setSeverity] = useState("");
     const [msg, setMsg] = useState("");
-    const [upd, setUpd] = useState(false);
+    const [upd, setUpd] = useState(0);
     const [teamID, setTeamID] = useState("");
+    const [teamList, setTeamList] = useState("");
 
     let params = queryString.parse(useLocation().search);
 
@@ -78,19 +80,29 @@ export default function ClassDashboard() {
         setProjectName("");
       }
 
+    const initTeamList = (team) => {
+        let mem = team.members;
+        let tempTeamList = [];
+        mem.forEach(member => {
+            tempTeamList.push(<li>{member.name}</li>)
+        });
+        setTeamList(tempTeamList);
+    }
+
     const fetchData = async () => {
         await axios.get(`https://project-management-portal-server.vercel.app/teacher/class?id=${params.id}`)
             .then((res) => {
+                console.log(classData);
                 setClassData(res.data);
 
-                let tempTeams = classData.teams;
+                let tempTeams = res.data.teams;
                 let teamCards = [];
                 tempTeams.forEach(team => {
-                    teamCards.push(<TeamCard onClickFunction={() => setTeamView(team)} teamName={team.name} projectName={team.projectName}/>)
+                    teamCards.push(<TeamCard onClickFunction={() => {setTeamView(team); initTeamList(team);}} teamName={team.name} projectName={team.projectName}/>)
                 });
                 setTeams(teamCards);
 
-                let students = classData.students;
+                let students = res.data.students;
                 let studentCards = [];
                 students.forEach(stud => {
                     studentCards.push(
@@ -103,8 +115,26 @@ export default function ClassDashboard() {
             })
     }
 
-    const requestToJoin = () => {
-        console.log(teamView);
+    const requestToJoin = async () => {
+        await axios.post("https://project-management-portal-server.vercel.app/team/join", {
+            team: teamView._id,
+            student: student.token._id
+        }).then((res) => {
+            if (res.status === 200) {
+                setOpen1(true);
+                setSeverity("success");
+                setMsg("Request sent to project manager.")
+            }
+            else {
+                setOpen1(true);
+                setSeverity("warning");
+                setMsg(res.data);
+            }
+        }).catch((err) => {
+            setOpen1(true);
+            setSeverity("error");
+            setMsg(err.response.data);
+        })
     }
 
     const createTeam = async () => {
@@ -124,7 +154,8 @@ export default function ClassDashboard() {
                     setOpen1(true);
                     setSeverity("success");
                     setMsg("Team created successfully!");
-                    setUpd(prev => !prev);
+                    setUpd(upd + 1);
+                    fetchData();
                 }
                 else
                 {
@@ -141,13 +172,10 @@ export default function ClassDashboard() {
         }
     }
 
-    const viewDetails = () => {
-        console.log(teamView);
-    }
-
     useEffect(() => {
         fetchData();
         console.log(student);
+        console.log(teamView);
     }, []);
 
     useEffect(() => {
@@ -162,7 +190,7 @@ export default function ClassDashboard() {
 
     return (
         <div>
-            <StudentNavbar />
+            {Object.keys(student).length > 0?<StudentNavbar/>:<TeacherNavbar/>}
             <Tabs value={tabValue} variant="fullWidth" style={{marginTop: "-1.8%", borderBottom: "1px solid blue"}} onChange={(e, val) => setTabValue(val)}>
                 <Tab label="Dashboard" {...a11yProps(0)} />
                 <Tab label="Students" {...a11yProps(1)} />
@@ -186,9 +214,9 @@ export default function ClassDashboard() {
                         {teams}
                     </div>
                     <div style={{width: "2%"}}></div>
-                    <div style={{width: "1%", borderLeft: "4px solid black", height: "72.3vh"}}></div>
+                    <div style={{width: "1%", borderLeft: "4px solid black"}}></div>
                     <div style={{width: "2%"}}></div>
-                    <div style={{width: "25%"}}>
+                    <div style={{width: "25%", height: "73vh"}}>
                         {teamView === null?
                         (<div style={{textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "100%", lineHeight: "175%"}}>
                             Click on a team to view details
@@ -208,6 +236,13 @@ export default function ClassDashboard() {
                                 <strong>Team Name</strong>: {teamView.name}
                                 <br/>
                                 <strong>Project Name</strong>: {teamView.projectName}
+                                <br/>
+                                <strong>Project Manager</strong>: {teamView.manager.name}
+                                <br/>
+                                <strong>Team Members:</strong>
+                                <ul>
+                                    {teamList}
+                                </ul>
                                 <div style={{textAlign: "center", padding: "10%"}}>
                                     {Object.keys(student).length !== 0?
                                     <Button variant="contained" onClick={requestToJoin}>Request To Join</Button>
@@ -217,7 +252,7 @@ export default function ClassDashboard() {
                                     </Link>}
                                 </div>
                             </div>
-                            <div style={{width: "20%", right: "0"}}>
+                            <div style={{width: "30%", right: "0"}}>
                                 <Button onClick={() => setTeamView(null)}><Close/></Button>
                             </div>
                         </div>)}

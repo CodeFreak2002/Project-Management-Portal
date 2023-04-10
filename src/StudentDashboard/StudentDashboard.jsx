@@ -36,9 +36,20 @@ function StudentDashboard() {
     }
 
     const fetchTeams = async () => {
+        console.log("here");
         await axios.get(`https://project-management-portal-server.vercel.app/student/teams?id=${student.token._id}`)
         .then((res) => {
-            
+            console.log(res.data.teams);
+            let teams = res.data.teams;
+            let tempTeamCards = [];
+            teams.forEach(team => {
+                tempTeamCards.push(
+                    <Grid item xs={6} md={3}>
+                        <TeamCard id={team._id} teamName={team.name} projectName={team.projectName} />
+                    </Grid>
+                );
+            });
+            setTeamCards(tempTeamCards);
         })
         .catch((err) => {
             console.log(err);
@@ -59,7 +70,7 @@ function StudentDashboard() {
         <div style={{margin: '0 auto'}}>
             <Navbar stateChanger={setUpd}/>
             <div className="greeting" style={{textAlign: 'center', marginTop: '3%'}}>
-                <Typography variant="h3" style={{color: 'black'}}>Hello, {student.token.name}!</Typography>
+                <Typography variant="h3" style={{color: 'black',fontWeight:'1%'}}>Hello, {student.token.name}!</Typography>
             </div>
             <div className="projects" style={{margin: '0 auto'}}>
                 <div className="projects-heading" style={{marginLeft: '5%', marginTop: '2%'}}>
@@ -74,11 +85,7 @@ function StudentDashboard() {
                     <Typography variant="h4" style={{color: 'black'}}>My Teams</Typography>
                 </div>
                 <Grid container rowSpacing={17} columnSpacing={8} style={{padding: '2% 5%', marginBottom: '15%'}}>
-                    <Grid item xs={6} md={3}>
-                        <Link href="/team?id=642b07f275738f35acf58f6e">
-                            <TeamCard id="642b07f275738f35acf58f6e" teamName="JellyFish" projectName="FishJelly" />
-                        </Link>
-                    </Grid>
+                    {teamCards}
                 </Grid>
             </div>
             <div className='text-center p-3' style={{ backgroundColor: 'whitesmoke', marginTop: '10%'}}>
