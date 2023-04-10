@@ -10,6 +10,8 @@ router.get('/', async function(req, res){
     await team.populate('manager')
     await team.populate('members');
     await team.populate('tasks');
+    await team.populate('invites');
+    await team.populate('review');
     return res.status(200).send(team);
 });
 
@@ -84,13 +86,23 @@ router.post('/accept', async function (req, res) {
 
     if (!team.invites.includes(req.body.student))
         return res.status(404).send("Request not found!")
-
+    
     if (req.body.status == "accept")
     {
+        var exisiting_team = await Team.findOne({class: team.class, members: {$elemMatch:{$eq: req.body.student}}}).clone()
+
+        if (exisiting_team)
+            return res.status(409).send("Cannot accept request. Already member of a team!")
+
         await Team.findByIdAndUpdate(
             req.body.team,
             {$push: {members: req.body.student}},
             {$pull: {invites: req.body.student}}
+        );
+
+        await Student.findByIdAndUpdate(
+           req.body.student,
+           {$push: {teams: req.body.team}} 
         );
     }
     
