@@ -4,20 +4,25 @@ const Team = require('../models/team')
 const Class = require('../models/class')
 const Task = require('../models/task')
 
+router.get("/", async(req, res) => {
+    let task = await Task.findById(req.query.id).clone();
+    await task.populate('executedBy');
+    await task.populate('team');
+    return res.status(200).send(task);
+});
+
 router.post("/create/" , async(req , res) => {
     let team = await Team.findById(req.body.team).clone();
-
-    console.log(req.body.member)
-    console.log(team)
 
     if (req.body.member != team.manager)
         return res.status(403).send("Only team manager can create tasks!")
 
     let task = new Task({
+        title : req.body.title,   
         description : req.body.description,
         deadline: req.body.deadline ? req.body.deadline : null,
         completionStatus : "Available",
-        team : req.body.team
+        team : req.body.team,
     });
     await task.save();
     await Team.findByIdAndUpdate(
