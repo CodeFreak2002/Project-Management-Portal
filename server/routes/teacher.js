@@ -81,7 +81,10 @@ router.get("/class/" , async(req , res) => {
         res.status(500).send("No such class");
     else {
         await classres.populate('students');
-        await classres.populate('teams');
+        await classres.populate({
+            path: 'teams',
+            populate: [{path: 'manager'}, {path: 'members'}]
+        });
         return res.status(200).send(classres);
     }
 });
