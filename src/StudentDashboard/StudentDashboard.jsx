@@ -45,14 +45,14 @@ function StudentDashboard() {
         })
     }
 
-    useEffect(() => {
-        fetchClasses();
-        fetchTeams();
+    useEffect(async () => {
+        await fetchClasses().then((res) => {}).catch((err) => {});
+        await fetchTeams().then((res) => {}).catch((err) => {});
     }, []);
 
-    useEffect(() => {
-        fetchClasses();
-        fetchTeams();
+    useEffect(async () => {
+        await fetchClasses().then((res) => {}).catch((err) => {});
+        await fetchTeams().then((res) => {}).catch((err) => {});
     }, [upd]);
 
     return (

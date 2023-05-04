@@ -146,18 +146,18 @@ export default function ClassDashboard() {
         console.log(teamView);
     }
 
-    useEffect(() => {
-        fetchData();
+    useEffect(async () => {
+        await fetchData().then((res) => {}).catch((err) => {});
         console.log(student);
     }, []);
 
-    useEffect(() => {
-        fetchData();
+    useEffect(async () => {
+        await fetchData().then((res) => {}).catch((err) => {});
         console.log(student);
     }, [tabValue]);
 
-    useEffect(() => {
-        fetchData();
+    useEffect(async () => {
+        await fetchData().then((res) => {}).catch((err) => {});
         console.log(upd);
     }, [upd])
 

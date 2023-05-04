@@ -32,13 +32,13 @@ function TeacherDashboard() {
         })
     }
 
-    useEffect(() => {
-        fetchClasses();
+    useEffect(async () => {
+        await fetchClasses().then((res) => {}).catch((err) => {});
         loaded.current = true;
     }, [])
 
-    useEffect(() => {
-        fetchClasses();
+    useEffect(async () => {
+        await fetchClasses().then((res) => {}).catch((err) => {});
     }, [upd]);
 
     if (!loaded) return null;
