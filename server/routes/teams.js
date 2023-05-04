@@ -15,7 +15,7 @@ router.get('/', async function(req, res){
 
 router.post('/', async function(req, res){
 
-    let team = await Team.findOne({class:req.body.class.toString(), members:{$elemMatch:{$eq:req.body.manager}}}).clone()
+    let team = await Team.findOne({class:req.body.class.toString(), members:{$elemMatch:{$eq:req.body.manager.toString()}}}).clone()
 
     if (team)
         return res.status(409).send("Already a member of a team!")
