@@ -92,7 +92,7 @@ export default function TeamDashboard() {
     }
 
     useEffect(() => {
-        fetchData();
+        fetchData().then().catch();
     }, []);
 
     // useEffect(() => {
