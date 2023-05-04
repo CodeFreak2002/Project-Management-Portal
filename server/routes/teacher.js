@@ -4,14 +4,14 @@ const Teacher = require("./../models/teacher.js");
 const Classes = require("./../models/class.js");
 
 router.post("/register/" , function(req , res) {
-    Teacher.find({email : req.body.email} , function(err , obj) {
+    Teacher.find({email : req.body.email.toString()} , function(err , obj) {
         if(obj.length)
             return res.status(500).send("Email already registered");
     })
     .clone()
     .then((results) => {
         if(!results.length) {
-            Teacher.find({phone : req.body.phone} , function(err , obj) {
+            Teacher.find({phone : req.body.phone.toString()} , function(err , obj) {
                 if(obj.length)
                     return res.status(500).send("Phone number already registered");
             })
@@ -19,10 +19,10 @@ router.post("/register/" , function(req , res) {
             .then((results) => {
                 if(!results.length) {
                     const teacher = new Teacher({
-                        name : req.body.name , 
-                        email : req.body.email , 
-                        password : req.body.password ,
-                        phone : req.body.phone , 
+                        name : req.body.name.toString() , 
+                        email : req.body.email.toString() , 
+                        password : req.body.password.toString() ,
+                        phone : req.body.phone.toString() , 
                     });
                     teacher.save()
                     .then((results) => {
@@ -38,13 +38,13 @@ router.post("/register/" , function(req , res) {
 });
 
 router.post("/login/" , function(req , res) {
-    Teacher.find({email : req.body.email} , function(err , obj) {
+    Teacher.find({email : req.body.email.toString()} , function(err , obj) {
         if(err) 
             return console.log(err);
         if(!obj.length) 
             return res.status(404).send("User does not exit");
         let TeacherObj = obj[0];
-        if(TeacherObj.password === req.body.password)
+        if(TeacherObj.password === req.body.password.toString())
             return res.status(200).send(TeacherObj);
         return res.status(500).send("Incorrect Password");
     })
@@ -53,12 +53,12 @@ router.post("/login/" , function(req , res) {
 });
 
 router.post("/profile" , async function(req , res) {
-    let teacherObj = await Teacher.findOne({email : req.body.email}).clone();
+    let teacherObj = await Teacher.findOne({email : req.body.email.toString()}).clone();
     try {
         let profile = {
-            "name" : teacherObj.name , 
-            "email" : teacherObj.email , 
-            "phone" : teacherObj.phone
+            "name" : teacherObj.name.toString() , 
+            "email" : teacherObj.email.toString() , 
+            "phone" : teacherObj.phone.toString()
         };
         res.status(200).send(JSON.stringify(profile));
     } catch(err) {
@@ -68,7 +68,7 @@ router.post("/profile" , async function(req , res) {
 });
 
 router.post("/classes" , async function(req , res) {
-    let teacherObj = await Teacher.findOne({email : req.body.email}).clone();
+    let teacherObj = await Teacher.findOne({email : req.body.email.toString()}).clone();
     if(teacherObj === null)
         return res.status(500).send("Not a valid teacher");
     await teacherObj.populate('courses');
@@ -76,7 +76,7 @@ router.post("/classes" , async function(req , res) {
 });
 
 router.get("/class/" , async(req , res) => {
-    const classres = await Classes.findById(req.query.id).clone();
+    const classres = await Classes.findById(req.query.id.toString()).clone();
     if(classres == null)
         res.status(500).send("No such class");
     else {

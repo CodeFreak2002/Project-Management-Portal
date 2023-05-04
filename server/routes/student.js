@@ -4,20 +4,20 @@ const Student = require('../models/student');
 const Classes = require('../models/class');
 
 router.post('/register', async function(req,res){
-    var student = await Student.findOne({email : req.body.email}).clone();
+    var student = await Student.findOne({email : req.body.email.toString()}).clone();
     if (student)
         return res.status(500).send("Email already registered");
     if (req.body.phone) {
-        var student = await Student.findOne({phone : req.body.phone}).clone();
+        var student = await Student.findOne({phone : req.body.phone.toString()}).clone();
         if (student)
             return res.status(500).send("Phone already registered");
     }
 
     var newStudent = new Student({
-        name : req.body.name,
-        email : req.body.email,
-        password : req.body.password,
-        phone : req.body.phone,
+        name : req.body.name.toString(),
+        email : req.body.email.toString(),
+        password : req.body.password.toString(),
+        phone : req.body.phone.toString(),
     });
 
     await newStudent.save();
@@ -25,9 +25,9 @@ router.post('/register', async function(req,res){
 });
 
 router.post('/login' , async function(req , res) {
-    let student = await Student.findOne({email : req.body.email}).clone();
+    let student = await Student.findOne({email : req.body.email.toString()}).clone();
     if(student) {
-        if(student.password === req.body.password)
+        if(student.password === req.body.password.toString())
             return res.status(200).send(student);
         return res.status(500).send("Invalid Password");
     } 
@@ -35,12 +35,12 @@ router.post('/login' , async function(req , res) {
 });
 
 router.post("/profile" , async function(req , res) {
-    let studentObj = await Student.findOne({email : req.body.email}).clone();
+    let studentObj = await Student.findOne({email : req.body.email.toString()}).clone();
     try {
         let profile = {
-            "name" : studentObj.name , 
-            "email" : studentObj.email , 
-            "phone" : studentObj.phone
+            "name" : studentObj.name.toString() , 
+            "email" : studentObj.email.toString() , 
+            "phone" : studentObj.phone.toString()
         };
         res.status(200).send(JSON.stringify(profile));
     } catch(err) {
@@ -50,14 +50,14 @@ router.post("/profile" , async function(req , res) {
 });
 
 router.get("/teams/" , async function(req , res) {
-    let studentObj = await Student.findById(req.query.id).clone();
+    let studentObj = await Student.findById(req.query.id.toString()).clone();
     await studentObj.populate('teams');
     return res.status(200).send(studentObj);
 });
 
 
 router.post("/classes" , async function(req , res) {
-    let studentObj = await Student.findOne({email : req.body.email}).clone().populate("courses");
+    let studentObj = await Student.findOne({email : req.body.email.toString()}).clone().populate("courses");
     return res.status(200).send(studentObj);
 });
 
