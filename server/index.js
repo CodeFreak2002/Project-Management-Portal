@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+app.disable("x-powered-by");
 const port = 5000;
 const logger = require("morgan");
 const bodyParser = require("body-parser");
