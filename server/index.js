@@ -6,10 +6,7 @@ const logger = require("morgan");
 const bodyParser = require("body-parser");
 
 var cors = require('cors');
-var corsOptions = {
-    origin : ['http://localhost:3000']
-};
-app.use(cors(corsOptions));
+app.use(cors());
 
 const teacher = require("./routes/teacher.js");
 const classes = require("./routes/class.js");
