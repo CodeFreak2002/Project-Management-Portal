@@ -29,9 +29,7 @@
   --labelScaleFactor: 0.8;
   --labelDefaultPosY: 50%;
   --labelTransformedPosY: calc(
-    (var(--labelDefaultPosY)) - 
-    (var(--inputPaddingV) * var(--labelScaleFactor)) - 
-    (var(--inputFontSize) * var(--inputLineHeight))
+    (var(--labelDefaultPosY)) - (var(--inputPaddingV) * var(--labelScaleFactor)) - (var(--inputFontSize) * var(--inputLineHeight))
   );
   --inputTransitionDuration: var(--transitionDuration);
   --inputTransitionTF: var(--transitionTF);

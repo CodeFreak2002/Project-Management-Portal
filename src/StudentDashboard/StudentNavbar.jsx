@@ -76,9 +76,9 @@ function StudentNavbar({ stateChanger }) {
 
   const joinClass = async () => {
     await axios.get(`https://project-management-portal-server.vercel.app/class/search?code=${classCode}`)
-      .then((res) => {
+      .then(async (res) => {
       if (res.status === 200) {
-        enrol();
+        await enrol().then((res) => {}).catch((err) => {});
       }
     }).catch((err) => {
       setOpen1(true);

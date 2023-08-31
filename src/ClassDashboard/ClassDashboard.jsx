@@ -10,6 +10,7 @@ import TeamCard from "./TeamCard";
 import StudentDetail from "./StudentDetail";
 import AuthContext from "../AuthContext";
 import { Close } from "@mui/icons-material";
+import TeacherNavbar from "../TeacherDashboard/TeacherNavbar";
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -145,24 +146,24 @@ export default function ClassDashboard() {
         console.log(teamView);
     }
 
-    useEffect(() => {
-        fetchData();
+    useEffect(async () => {
+        await fetchData().then((res) => {}).catch((err) => {});
         console.log(student);
     }, []);
 
-    useEffect(() => {
-        fetchData();
+    useEffect(async () => {
+        await fetchData().then((res) => {}).catch((err) => {});
         console.log(student);
     }, [tabValue]);
 
-    useEffect(() => {
-        fetchData();
+    useEffect(async () => {
+        await fetchData().then((res) => {}).catch((err) => {});
         console.log(upd);
     }, [upd])
 
     return (
         <div>
-            <StudentNavbar />
+            {Object.keys(student).length > 0?<StudentNavbar/> : <TeacherNavbar/>}
             <Tabs value={tabValue} variant="fullWidth" style={{marginTop: "-1.8%", borderBottom: "1px solid blue"}} onChange={(e, val) => setTabValue(val)}>
                 <Tab label="Dashboard" {...a11yProps(0)} />
                 <Tab label="Students" {...a11yProps(1)} />

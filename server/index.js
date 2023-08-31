@@ -1,14 +1,12 @@
 const express = require("express");
 const app = express();
+app.disable("x-powered-by");
 const port = 5000;
 const logger = require("morgan");
 const bodyParser = require("body-parser");
 
 var cors = require('cors');
-var corsOptions = {
-    origin : '*'
-};
-app.use(cors(corsOptions));
+app.use(cors());
 
 const teacher = require("./routes/teacher.js");
 const classes = require("./routes/class.js");

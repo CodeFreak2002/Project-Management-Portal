@@ -91,8 +91,8 @@ export default function TeamDashboard() {
         }
     }
 
-    useEffect(() => {
-        fetchData();
+    useEffect(async () => {
+        await fetchData().then((res) => {}).catch((err) => {});
     }, []);
 
     // useEffect(() => {

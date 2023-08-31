@@ -12,34 +12,38 @@ router.get("/", async(req, res) => {
 });
 
 router.post("/create/" , async(req , res) => {
-    let team = await Team.findById(req.body.team).clone();
+    let team = await Team.findById(req.body.team.toString()).clone();
 
     if (req.body.member != team.manager)
         return res.status(403).send("Only team manager can create tasks!")
 
     let task = new Task({
-        title : req.body.title,   
-        description : req.body.description,
-        deadline: req.body.deadline ? req.body.deadline : null,
+        title : req.body.title.toString(),   
+        description : req.body.description.toString(),
+        deadline: req.body.deadline ? req.body.deadline.toString() : null,
         completionStatus : "Available",
-        team : req.body.team,
+        team : req.body.team.toString(),
     });
     await task.save();
     await Team.findByIdAndUpdate(
-        req.body.team,
+        req.body.team.toString(),
         {$push : {tasks : task}}
     );
     return res.status(200).send("Task Added");
 });
 
 router.post("/pick" , async(req , res) => {
-    let task = await Task.findById(req.body.task).clone();
+    let task = await Task.findById(req.body.task.toString()).clone();
+    
     if(!task)
         return res.status(500).send("No such task found!");
-    if(task.completionStatus != "Available")
+    
+        if(task.completionStatus != "Available")
         return res.status(500).send("Task already picked by some team member!");
-    let curTime = Date.now();
-    task.executedBy = req.body.member;
+    
+        let curTime = Date.now();
+
+    task.executedBy = req.body.member.toString();
     task.completionStatus = "Ongoing";
     task.startTime = curTime;
     await task.save();
@@ -48,12 +52,12 @@ router.post("/pick" , async(req , res) => {
 
 router.post("/submit" , async(req , res) => {
 
-    let task = await Task.findById(req.body.task).clone();
+    let task = await Task.findById(req.body.task.toString()).clone();
     
     if(!task)
         return res.status(404).send("No such task found!");
         
-    if(task.executedBy != req.body.member)
+    if(task.executedBy != req.body.member.toString())
         return res.status(409).send("Task assigned to different user!");
     
     if (task.completionStatus == "In Review")
