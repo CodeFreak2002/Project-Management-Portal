@@ -2,8 +2,12 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const TaskSchema = new Schema({
+    title : {
+        type : String,
+        required : true
+    },
     description : {
-        type : String , 
+        type : String, 
         required : true
     }, 
     executedBy : {
@@ -27,10 +31,6 @@ const TaskSchema = new Schema({
         type : String , 
         required : true
     }, 
-    reviewedBy : {
-        type : [{ type : Schema.Types.ObjectId, ref : 'student'}] ,
-        required : false
-    },
     team : {
         type : Schema.Types.ObjectId,
         ref : 'team',
