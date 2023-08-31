@@ -57,7 +57,7 @@ router.post('/join', async function (req, res) {
     if (!requested_team)
         return res.status(404).send("Team does not exist!")
 
-    var existing_team = await Team.findOne({class: requested_team.class, members:{$elemMatch:{$eq:req.body.student}}}).clone()
+    var existing_team = await Team.findOne({class: requested_team.class.toString(), members:{$elemMatch:{$eq:req.body.student.toString()}}}).clone()
     
     if (existing_team)
         return res.status(409).send("Already a member of a team!")
@@ -89,7 +89,7 @@ router.post('/accept', async function (req, res) {
     
     if (req.body.status == "accept")
     {
-        var exisiting_team = await Team.findOne({class: team.class, members: {$elemMatch:{$eq: req.body.student}}}).clone()
+        var exisiting_team = await Team.findOne({class: team.class.toString(), members: {$elemMatch:{$eq: req.body.student.toString()}}}).clone()
 
         if (exisiting_team)
             return res.status(409).send("Cannot accept request. Already member of a team!")
