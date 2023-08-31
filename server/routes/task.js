@@ -22,7 +22,7 @@ router.post("/create/" , async(req , res) => {
         description : req.body.description.toString(),
         deadline: req.body.deadline ? req.body.deadline.toString() : null,
         completionStatus : "Available",
-        team : req.body.team.toString(),
+        team : req.body.team.toString()
     });
     await task.save();
     await Team.findByIdAndUpdate(
