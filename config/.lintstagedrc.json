@@ -1,0 +1,11 @@
+{
+  "frontend/**/*.{js,jsx}": [
+    "npx prettier -c config/.prettierrc --write",
+    "npx eslint --max-warnings 0"
+  ],
+
+  "server/**/*.js": [
+    "npx prettier -c config/.prettierrc --write",
+    "npx eslint -c config/express-eslint-config.js --max-warnings 0"
+  ]
+}
